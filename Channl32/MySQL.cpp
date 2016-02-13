@@ -6,7 +6,7 @@ extern CIni config;
 MySQL::MySQL()
 {
 	config.SetSection("DB");
-	char * ip = config.ReadString("ip", "178.162.181.68");
+	char * ip = config.ReadString("ip", "127.0.0.1");
 	uint32 port = config.ReadInteger("port", 3306);
 	char * user = config.ReadString("user", "sp");
 	char * pw = config.ReadString("pw", "pserver1");
