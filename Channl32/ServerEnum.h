@@ -415,7 +415,7 @@ public:
 			int a = Type % 10, b = IdentifyItem(Type);
 			int Skill1 = rand() % ((level + 1) * 4) + 1;
 			int skill_tmp = old_skill / 1000000;
-			int Skill2 = (old_skill - skill_tmp) / 1000;
+			int Skill2 = (old_skill - skill_tmp*1000000) / 1000;
 			int Skill3 = 0;
 			if (a == 4 && b == ct_arm) //boots
 			{
