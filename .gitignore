@@ -5,6 +5,7 @@
 *.obj
 .vs/*
 *.sdf
+*.opensdf
 # Precompiled Headers
 *.gch
 *.pch
@@ -29,4 +30,3 @@
 *.app
 /builds
 /bin
-SP_Server_vs2015.opensdf
