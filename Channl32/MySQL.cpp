@@ -431,6 +431,7 @@ void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
     CUR->WindElements = Info->Wind;
 	if (CUR->UpgradeType == 1)
 	{
+		if(CUR->Level < 8){
 		if (Item.UpgradeItem(CUR->GF, CUR->Level))
 		{
 			CUR->Level += 1;
@@ -439,6 +440,7 @@ void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
 		{
 			CUR->UpgradeType = 2;
 			CUR->unk2 = 5;
+		}
 		}
 	}
 	else
