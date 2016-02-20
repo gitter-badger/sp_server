@@ -263,7 +263,7 @@ public:
                 RLR->maxplayers[x] = Rooms[i].maxp;
                 RLR->unks2[x] = 1;
                 RLR->unks4[x] = -1;
-                for(int j = 0; j < Rooms[i].maxp; j++)
+                for(int j = 0; j < Rooms[i].maxp -1; j++)
                 {
                     RLR->players[x][j] = Rooms[i].Player[j] ? Rooms[i].Player[j]->Info.usr_char : 0;
                 }
