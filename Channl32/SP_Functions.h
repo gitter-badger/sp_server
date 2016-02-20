@@ -449,8 +449,8 @@ void PacketHandler::GetBigBattleNpcMultiplier()
 	BBNM.x[0] = 2;
 	BBNM.x[1] = 5;
 	BBNM.x[2] = 10;
-	for(int i = 3; i < 36; i++)
-		BBNM.x[i] = 1;	
+    for (int i = 3; i < 36; i++)//36
+        BBNM.x[i] = 1;
     BBNM.state = UpdateState();
     BBNM.checksum = cIOSocket.MakeDigest((uint8*)&BBNM);
     unsigned char *msg = (unsigned char*)&BBNM;

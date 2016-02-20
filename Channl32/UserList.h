@@ -449,6 +449,7 @@ public:
 	}
     void ProdcastDeathResponse(PlayerKilledRequest *PK,int n)
     {
+        cout << "-- PlayerKilledRequest --" << endl;
         PlayerKilledResponse PKR;
         PKR.size = 0xAC;
         PKR.type = PLAYER_KILLED_RESPONSE;
@@ -478,6 +479,7 @@ public:
 						PKR.canRespawn = Rooms[i].life[j];
                         Rooms[i].Player[j]->GetInRoomDeathResponse(&PKR);
 					}
+                cout << "-- CheckLife --" << endl;
 				if(CheckLife(i) == false){
 				 ResultsResponse Results_Response;
 				 memset(&Results_Response,0,sizeof(Results_Response));

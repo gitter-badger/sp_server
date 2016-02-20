@@ -756,7 +756,7 @@ struct BigBattleNpcKoResponse
 	int state;
 	int npcn;
 	int zero;
-	int unk2; //1
+	int luckmul; //Lucky Point Multiplier
 	int multiplier;
 	int unk3; //1
 	int unk4; //1
