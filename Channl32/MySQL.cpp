@@ -386,25 +386,27 @@ void MySQL::GetMoneyAmmount(int id,int *cash,unsigned __int64 *code,char sign,in
     mysql_free_result(res);
 }
 
-void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
+void MySQL::UpgradeCard(MyCharInfo *Info, CardUpgradeResponse *CUR)
 {
-    char buffer[300];
-    sprintf(buffer,"SELECT itm_type, itm_gf, itm_level, itm_skill FROM items WHERE itm_usr_id = %d AND itm_slot = %d",Info->usr_id,CUR->Slot);
-    mysql_query(connection,buffer);
-    MYSQL_RES *res = mysql_use_result(connection);
-    MYSQL_ROW result = mysql_fetch_row(res);
-    ItemId Item;
-    if(!result)
-    {
-        printf("No Data\n");
-        return;
-    }
-    CUR->Type = atoi(result[0]);
-    CUR->GF = atoi(result[1]);
-    CUR->Level = atoi(result[2]);
+	char buffer[300];
+	sprintf(buffer, "SELECT itm_type, itm_gf, itm_level, itm_skill FROM items WHERE itm_usr_id = %d AND itm_slot = %d", Info->usr_id, CUR->Slot);
+	mysql_query(connection, buffer);
+	MYSQL_RES *res = mysql_use_result(connection);
+	MYSQL_ROW result = mysql_fetch_row(res);
+	ItemId Item;
+	if (!result)
+	{
+		printf("No Data\n");
+		return;
+	}
+	CUR->Type = atoi(result[0]);
+	CUR->GF = atoi(result[1]);
+	CUR->Level = atoi(result[2]);
 	int old_skill = atoi(result[3]);
-    int EleCost = Item.GetUpgradeCost(CUR->Type,CUR->Level,CUR->UpgradeType);
-    int ItemSpirite = (CUR->Type%100)/10;
+	int EleCost = Item.GetUpgradeCost(CUR->Type, CUR->Level, CUR->UpgradeType);
+	int ItemSpirite = (CUR->Type % 100) / 10;
+	if ((CUR->UpgradeType != 5) && (CUR->UpgradeType != 6))
+	{
     if(ItemSpirite == 1)
     {
         Info->Water -= EleCost;
@@ -425,6 +427,7 @@ void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
         Info->Wind -= EleCost;
         sprintf(buffer,"UPDATE users SET usr_wind = (usr_wind-%d) WHERE usr_id = %d",EleCost,Info->usr_id);
     }
+	}
     CUR->WaterElements = Info->Water;
     CUR->FireElements = Info->Fire;
     CUR->EarthElements = Info->Earth;
