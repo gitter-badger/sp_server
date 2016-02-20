@@ -389,7 +389,7 @@ void MySQL::GetMoneyAmmount(int id,int *cash,unsigned __int64 *code,char sign,in
 void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
 {
     char buffer[300];
-    sprintf(buffer,"SELECT itm_type, itm_gf, itm_level FROM items WHERE itm_usr_id = %d AND itm_slot = %d",Info->usr_id,CUR->Slot);
+    sprintf(buffer,"SELECT itm_type, itm_gf, itm_level, itm_skill FROM items WHERE itm_usr_id = %d AND itm_slot = %d",Info->usr_id,CUR->Slot);
     mysql_query(connection,buffer);
     MYSQL_RES *res = mysql_use_result(connection);
     MYSQL_ROW result = mysql_fetch_row(res);
@@ -402,6 +402,7 @@ void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
     CUR->Type = atoi(result[0]);
     CUR->GF = atoi(result[1]);
     CUR->Level = atoi(result[2]);
+	int old_skill = atoi(result[3]);
     int EleCost = Item.GetUpgradeCost(CUR->Type,CUR->Level,CUR->UpgradeType);
     int ItemSpirite = (CUR->Type%100)/10;
     if(ItemSpirite == 1)
@@ -442,10 +443,9 @@ void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
 	}
 	else
 	{
-		CUR->UpgradeType = 2;
 		CUR->unk2 = 5;
 	}
-    CUR->Skill = Item.GenerateSkill(CUR->Level,CUR->Type);
+    CUR->Skill = Item.GenerateSkill(CUR->Level,CUR->Type,CUR->UpgradeType,old_skill);
     mysql_free_result(res);
     mysql_query(connection,buffer);
     sprintf(buffer,"UPDATE items SET itm_level = %d, itm_skill = %d WHERE itm_usr_id = %d AND itm_slot = %d",CUR->Level,CUR->Skill,Info->usr_id,CUR->Slot);

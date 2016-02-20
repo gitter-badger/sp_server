@@ -354,61 +354,114 @@ public:
 			}
         return 0;
     }
-    int GenerateSkill(int level,int Type)
-    {
-        int sizeofBootSkill1 = sizeof(BootSkill1);
-        int a = Type%10, b = IdentifyItem(Type);
-        int Skill1 = rand()%((level+1)*4) + 1, Skill2 = 0, Skill3 = 0;
-        if(a == 4 && b == ct_arm ) //boots
-        {
-            Skill2 = BootSkill1[rand()%20];
-            Skill3 = BootSkill2[rand()%20];
-            Skill Sk(Skill1,Skill2,Skill3);
-            return Sk.getType();
-        }
-        if(a == 3 && b == ct_arm) //armor
-        {
-            Skill2 = ArmorSkill1[rand()%30];
-			Skill3 = ArmorSkill2[rand()%61];
-            Skill Sk(Skill1,Skill2,Skill3);
-            return Sk.getType();
-        }
-		if (a == 2 && b == ct_arm) //Pendant
-		{
-			Skill2 = PenantSkill1[rand()%12];
-			Skill3 = PenantSkill2[rand()%16];
-			Skill Sk(Skill1, Skill2, Skill3);
-			return Sk.getType();
+	int GenerateSkill(int level, int Type, int UpgradeType, int old_skill)
+	{
+		if (UpgradeType != 6) {
+			int sizeofBootSkill1 = sizeof(BootSkill1);
+			int a = Type % 10, b = IdentifyItem(Type);
+			int Skill1 = rand() % ((level + 1) * 4) + 1, Skill2 = 0, Skill3 = 0;
+			if (a == 4 && b == ct_arm) //boots
+			{
+				Skill2 = BootSkill1[rand() % 20];
+				Skill3 = BootSkill2[rand() % 20];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (a == 3 && b == ct_arm) //armor
+			{
+				Skill2 = ArmorSkill1[rand() % 30];
+				Skill3 = ArmorSkill2[rand() % 61];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (a == 2 && b == ct_arm) //Pendant
+			{
+				Skill2 = PenantSkill1[rand() % 12];
+				Skill3 = PenantSkill2[rand() % 16];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (a == 1 && b == ct_arm) //Shield
+			{
+				Skill2 = ShieldSkill1[rand() % 35];
+				Skill3 = ShieldSkill2[rand() % 74];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (b == ct_wpn)
+			{
+				Skill2 = WeaponSkill1[rand() % 25];
+				if (a == 1 || a == 3)
+				{
+					Skill3 = MeleeWpnSkill2[rand() % 106];
+				}
+				else if (a == 2 || a == 4)
+				{
+					Skill3 = RangedWpnSkill2[rand() % 107];
+				}
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (b == ct_mag)
+			{
+				Skill2 = MagicSkill[rand() % 104];
+				Skill3 = MagicSkill[rand() % 104];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
 		}
-		if (a == 1 && b == ct_arm) //Shield
-		{
-			Skill2 = ShieldSkill1[rand()%35];
-			Skill3 = ShieldSkill2[rand()%74];
-			Skill Sk(Skill1, Skill2, Skill3);
-			return Sk.getType();
+		else {
+			int sizeofBootSkill1 = sizeof(BootSkill1);
+			int a = Type % 10, b = IdentifyItem(Type);
+			int Skill1 = rand() % ((level + 1) * 4) + 1;
+			int skill_tmp = old_skill / 1000000;
+			int Skill2 = (old_skill - skill_tmp) / 1000;
+			int Skill3 = 0;
+			if (a == 4 && b == ct_arm) //boots
+			{
+				Skill3 = BootSkill2[rand() % 20];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (a == 3 && b == ct_arm) //armor
+			{
+				Skill3 = ArmorSkill2[rand() % 61];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (a == 2 && b == ct_arm) //Pendant
+			{
+				Skill3 = PenantSkill2[rand() % 16];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (a == 1 && b == ct_arm) //Shield
+			{
+				Skill3 = ShieldSkill2[rand() % 74];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (b == ct_wpn)
+			{
+				if (a == 1 || a == 3)
+				{
+					Skill3 = MeleeWpnSkill2[rand() % 106];
+				}
+				else if (a == 2 || a == 4)
+				{
+					Skill3 = RangedWpnSkill2[rand() % 107];
+				}
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
+			if (b == ct_mag)
+			{
+				Skill3 = MagicSkill[rand() % 104];
+				Skill Sk(Skill1, Skill2, Skill3);
+				return Sk.getType();
+			}
 		}
-        if(b == ct_wpn)
-        {
-            Skill2 = WeaponSkill1[rand()%25];
-            if(a == 1 || a == 3)
-            {
-                Skill3 = MeleeWpnSkill2[rand()%106];
-            }
-            else if(a == 2 || a == 4)
-            {
-                Skill3 = RangedWpnSkill2[rand()%107];
-            }
-            Skill Sk(Skill1,Skill2,Skill3);
-            return Sk.getType();
-        }
-        if(b == ct_mag)
-        {
-            Skill2 = MagicSkill[rand()%104];
-            Skill3 = MagicSkill[rand()%104];
-            Skill Sk(Skill1,Skill2,Skill3);
-            return Sk.getType();
-        }
-    }
+	}
 };
 
 struct ExpGain
