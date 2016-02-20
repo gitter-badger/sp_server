@@ -8,9 +8,9 @@ MySQL::MySQL()
 	config.SetSection("DB");
 	char * ip = config.ReadString("ip", "127.0.0.1");
 	uint32 port = config.ReadInteger("port", 3306);
-	char * user = config.ReadString("user", "sp");
-	char * pw = config.ReadString("pw", "pserver1");
-	char * db = config.ReadString("db", "sp_db");
+	char * user = config.ReadString("user", "root");
+	char * pw = config.ReadString("pw", "spgame");
+	char * db = config.ReadString("db", "spgame");
 
 	connection = mysql_init(0);
 	if(!mysql_real_connect(connection, ip, user, pw, db, port, 0, 0))
@@ -179,6 +179,7 @@ void MySQL::ChangeEquips(int id,EquipChangeRequest *ECR)
     if(!ECR)return;
     char buffer[400];
     sprintf(buffer,"UPDATE equipments SET eqp_mag = %d, eqp_wpn = %d, eqp_arm = %d, eqp_pet = %d, eqp_foot = %d, eqp_body = %d, eqp_hand1 = %d, eqp_hand2 = %d, eqp_face = %d, eqp_hair = %d, eqp_head = %d WHERE usr_id = %d",ECR->mag,ECR->wpn,ECR->arm,ECR->pet,ECR->foot,ECR->body,ECR->hand1,ECR->hand2,ECR->face,ECR->hair,ECR->head,id);
+    //printf(buffer);
     mysql_query(connection,buffer);
 }
 
@@ -401,7 +402,7 @@ void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
     CUR->Type = atoi(result[0]);
     CUR->GF = atoi(result[1]);
     CUR->Level = atoi(result[2]);
-    int EleCost = Item.GetUpgradeCost(CUR->Type,CUR->Level);
+    int EleCost = Item.GetUpgradeCost(CUR->Type,CUR->Level,CUR->UpgradeType);
     int ItemSpirite = (CUR->Type%100)/10;
     if(ItemSpirite == 1)
     {
@@ -427,15 +428,23 @@ void MySQL::UpgradeCard(MyCharInfo *Info,CardUpgradeResponse *CUR)
     CUR->FireElements = Info->Fire;
     CUR->EarthElements = Info->Earth;
     CUR->WindElements = Info->Wind;
-    if(Item.UpgradeItem(CUR->GF,CUR->Level))
-    {
-        CUR->Level += 1;
-    }
-    else
-    {
-        CUR->UpgradeType = 2;
-        CUR->unk2 = 5;
-    }
+	if (CUR->UpgradeType == 1)
+	{
+		if (Item.UpgradeItem(CUR->GF, CUR->Level))
+		{
+			CUR->Level += 1;
+		}
+		else
+		{
+			CUR->UpgradeType = 2;
+			CUR->unk2 = 5;
+		}
+	}
+	else
+	{
+		CUR->UpgradeType = 2;
+		CUR->unk2 = 5;
+	}
     CUR->Skill = Item.GenerateSkill(CUR->Level,CUR->Type);
     mysql_free_result(res);
     mysql_query(connection,buffer);
@@ -514,7 +523,7 @@ void MySQL::GetExp(int usr_id, int usr_exp,const char *Elements, int Ammount)
 {
 	char buffer[300];
 	if(Elements)
-	sprintf(buffer,"UPDATE users SET usr_points = (usr_points+%d),usr_code = (usr_code+%d),usr_%s = %d  WHERE usr_id = %d",usr_exp,usr_exp,Elements,Ammount,usr_id);
+	sprintf(buffer,"UPDATE users SET usr_points = (usr_points+%d),usr_code = (usr_code+%d),usr_%s = (usr_%s+%d)  WHERE usr_id = %d",usr_exp,usr_exp,Elements,Elements,Ammount,usr_id);
 	else sprintf(buffer,"UPDATE users SET usr_points = (usr_points+%d),usr_code = (usr_code+%d)  WHERE usr_id = %d",usr_exp,usr_exp,usr_id);
 	mysql_query(connection,buffer);
 }
