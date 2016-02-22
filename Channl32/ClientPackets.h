@@ -32,9 +32,11 @@
 #define MISSION_COMPLETE_REQ  17494
 #define OPEN_USER_SHOP_REQ	  17265
 #define CARD_SEARCH_REQ		  17458
+#define BIGBATTLE_PLAYER_JOIN_REQ  17301
 #define BIGBATTLE_NPC_KO_REQ  17302
 #define PLAYER_KICK_REQ		  17184
 #define CHANGE_ROOMTITLE_REQ  17232
+#define UNKNOW_ROOM_JOIN_REQ  17410     
 
 struct JoinChannelRequest
 {
@@ -255,7 +257,7 @@ struct PlayerKilledRequest
     int unk1; //11036
     int checksum;
     int state;
-    int unk2; //Player slot?
+    int deathplayerslot; //Death player slot
     int killerslot;
     int unk3;
     int points;
@@ -400,6 +402,15 @@ struct CardSearchRequest
 	SearchType searchtype;
 };
 
+
+struct BigBattlePlayerJoinRequest //Unknown Request
+{
+    int size; //0x04 0xD8 1240byte
+    int type; 
+    int unk1; // 11036
+    int checksum;
+    int state;
+};
 struct BigBattleNpcKoRequest
 {
     int size; //0x40
@@ -408,9 +419,9 @@ struct BigBattleNpcKoRequest
     int checksum;
 	int state;
 	int killer; //0 = npc, other = player
-	int npcn;
+	int deadslot;   //The Dead Slot
 	int npclevel;
-	int unk2;
+	int killerslot;
 	int killerid;
 	int unk3;
 	char unk4[20];

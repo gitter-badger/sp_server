@@ -1,3 +1,22 @@
+#define HERO_MODE 51
+#define INFINITY_SURVIVAL_II_MODE 48
+#define INFINITY_KING_MODE 50
+#define INFINITY_SYMBOL_MODE 49
+#define SURVUVAL_MODE 4
+#define KING_SURVIVAL_MODE 15
+#define TEAMPLAY_MODE 3
+#define CRYSTAL_CAPTURE_MODE 40
+#define DUEL_MODE 5
+#define LUCKY3_MODE 6
+#define ASSAULY_MODE 7
+#define GAIN_SYMBOL_MODE 31
+#define KING_SLAYER_MODE 9
+#define MAGIC_LUCKY3_MODE 10
+#define FIGHT_CLUB_MODE 15
+#define TOUR_NAMENT_MODE 16
+#define BIG_BATTLE_SURVIVAL_MODE 33
+#define BIG_MATCH_AUTO_TEAM_SURVIVAL_MODE 34
+#define BIG_MATCH_DEATH_MATCH_MODE 35
 LobbyList::LobbyList()
 {
     count = 0;
@@ -313,11 +332,8 @@ public:
                 //if(Rooms[i].mode >= 12 && Rooms[i].mode <= 27)
                     //Room_PlayerData_Response.team = 0xA; //0xA
 				Room_PlayerData_Response.mission = Rooms[i].mission;
-				if(Rooms[i].Player[Rooms[i].master]){
-                if(Rooms[i].Player[Rooms[i].master]->Info.usr_ready)
-                    Rooms[i].started = true;
+                if (CheckReady(n))  Rooms[i].started = true;
                 else Rooms[i].started = false;
-				}
 
                 for(int j = 0; j < 8; j++)
                     if(Rooms[i].Player[j])
@@ -373,10 +389,8 @@ public:
                         //if(Rooms[i].mode >= 12 && Rooms[i].mode <= 27)
                             //Room_PlayerData_Response.team = 0xA;
 
-                        if(Rooms[i].Player[Rooms[i].master]->Info.usr_ready)
-                            Rooms[i].started = true;
+                        if (CheckReady(n))  Rooms[i].started = true;
                         else Rooms[i].started = false;
-
                         Room_PlayerData_Response.Slot = j;
                         Rooms[i].Player[j]->GetInRoomData(&Room_PlayerData_Response,Rooms[i].started);
                         for(int x = 0; x < 8; x++)
@@ -386,6 +400,97 @@ public:
                     }
 
                 break;
+            }
+    }
+    bool CheckReady(int n)
+    {
+        for (int i = 0; i < 22; i++)
+            if (Rooms[i].n == n)
+            {
+                int mode = Rooms[i].mode;
+                int Quest_Mode_Ready[15] = { 11,18,23,12,19,24,13,20,25,14,21,26,16,22,27 };
+                for (int j = 0; j < 15; j++)
+                {
+                    if (Quest_Mode_Ready[j] == Rooms[i].mode)
+                    {
+                        if (Rooms[i].started) return true;
+                        for (int k = 0; k < Rooms[i].p;k++)
+                        {
+                            if (!Rooms[i].Player[k]->Info.usr_ready) return false;
+                        }
+                        return true;
+                    }
+                }
+                switch (mode)
+                {
+                case BIG_BATTLE_SURVIVAL_MODE:
+                case BIG_MATCH_AUTO_TEAM_SURVIVAL_MODE:
+                case BIG_MATCH_DEATH_MATCH_MODE:
+                    return true;
+                    break;
+                case CRYSTAL_CAPTURE_MODE:
+                {
+                    if (Rooms[i].started)
+                        return true;
+                    int TEAM1 = 0, TEAM2 = 0;
+                    for (int j = 0; j < Rooms[i].p; j++)
+                    {
+                        if (Rooms[i].Player[j]->Info.usr_team == 10) TEAM1++;
+                        else TEAM2++;
+                    }
+                    if (TEAM1 == 0 || TEAM2 == 0)
+                        return false;
+                    for (int j = 0; j < Rooms[i].p; j++)
+                    {
+                        if (!Rooms[i].Player[j]->Info.usr_ready)
+                            return false;
+                    }
+                    return true;
+                }
+                break;
+                case TEAMPLAY_MODE:
+                {
+                    int TEAM1 = 0, TEAM2 = 0;
+                    for (int j = 0; j < Rooms[i].p; j++)
+                    {
+                        if (Rooms[i].Player[j]->Info.usr_team == 10) TEAM1++;
+                        else TEAM2++;
+                    }
+                    if (TEAM1 == TEAM2)
+                    {
+                        for (int j = 0; j < Rooms[i].p; j++)
+                        {
+                            if (!Rooms[i].Player[j]->Info.usr_ready)
+                                return false;
+                        }
+                        return true;
+                    }
+                    else return false;
+                }
+                break;
+                case DUEL_MODE:
+                {
+                    int TWO_READY = 0;
+                    for (int j = 0; j < 2; j++)
+                    {
+                        if (Rooms[i].Player[j])
+                            if (Rooms[i].Player[j]->Info.usr_ready) TWO_READY++;
+                    }
+                    if (TWO_READY == 2)
+                        return true;
+                    else
+                        return false;
+                    break;
+                }
+                default:
+                    for (int j = 0; j < Rooms[i].p; j++)
+                    {
+                        if (!Rooms[i].Player[j]->Info.usr_ready)
+                            return false;
+                    }
+                    return true;
+                    break;
+                }
             }
     }
 	bool IsAllReady(int n)
@@ -399,6 +504,18 @@ public:
 			}
 		return true;
 	}
+    int CheckRound(int roomnum, int deadslot)
+    {
+        for (int i = 0; i < Rooms[roomnum].p; i++)
+        {
+            if (Rooms[roomnum].Player[i]->Info.usr_team == Rooms[roomnum].Player[deadslot]->Info.usr_team)
+            {
+                if (Rooms[roomnum].life[deadslot] < Rooms[roomnum].life[i])
+                    return false;
+            }
+        }
+        return true;
+    }
     void ProdcastPlayerExitRoom(PacketHandler *player,RoomExitResponse *RER,int n)
     {
         for(int i = 0; i < 22; i++)
@@ -441,12 +558,59 @@ public:
                     }
             }
     }
-	bool CheckLife(int n)
-	{
-		for(int i = 0; i < 8; i++)
-			if(Rooms[n].life[i] > 0)return true;
-		return false;
-	}
+    bool CheckLife(int roomnum, int mode, int deathslot)
+    {
+        int Quest_Mode_Life[15] = { 11,18,23,12,19,24,13,20,25,14,21,26,16,22,27 };
+        for (int i = 0; i < 15; i++)
+        {
+            if (Quest_Mode_Life[i] == mode)
+            {
+                for (int j = 0; j < Rooms[roomnum].p; j++)
+                    if (Rooms[roomnum].life[j] > 0)return true;
+                return false;
+            }
+        }
+        switch (mode)
+        {
+        case TEAMPLAY_MODE:
+            for (int i = 0; i < Rooms[roomnum].p; i++)
+            {
+                if (Rooms[roomnum].Player[i]->Info.usr_team == Rooms[roomnum].Player[deathslot]->Info.usr_team)
+                {
+                    if (Rooms[roomnum].life[i] >= 0)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+            break;
+        case 5:
+            if (Rooms[roomnum].life[deathslot] >= 0) return true;
+            else return false;
+            break;
+        default:
+            for (int i = 0; i < Rooms[roomnum].p; i++)
+                if (Rooms[roomnum].life[i] > 0) return true;
+            return false;
+            break;
+        }
+    }
+    int CheckResult(int mode, int killerteam, int slotteam)
+    {
+        switch (mode)
+        {
+        case TEAMPLAY_MODE:
+            if (killerteam == slotteam) return 1;
+            else return 2;
+            break;
+        case DUEL_MODE:
+            if (killerteam == slotteam) return 1;
+            else return 2;
+            break;
+        }
+
+    }
     void ProdcastDeathResponse(PlayerKilledRequest *PK,int n)
     {
         cout << "-- PlayerKilledRequest --" << endl;
@@ -454,7 +618,7 @@ public:
         PKR.size = 0xAC;
         PKR.type = PLAYER_KILLED_RESPONSE;
         PKR.unk1 = 11036;
-        PKR.DeadplayerSlot = PK->unk2;
+        PKR.DeadplayerSlot = PK->deathplayerslot;
         PKR.KillerSlot = PK->killerslot;
         PKR.PointsMiltiplier = 5;
         PKR.unk2 = 3; //3,2
@@ -471,8 +635,10 @@ public:
         PKR.unk03 = 1; //1
         //PKR.canRespawn = Info.quest; //0
         for(int i = 0; i < 22; i++)
-            if(Rooms[i].n == n)
+            if (Rooms[i].n == n  && Rooms[i].p >= 1)
             {
+                int KillerTeam = Rooms[i].Player[PK->killerslot]->Info.usr_team;
+                int SlotTeam = 0;
 				if(PKR.DeadplayerSlot >= 0 && PKR.DeadplayerSlot < 8)Rooms[i].life[PKR.DeadplayerSlot]--;
                 for(int j = 0; j < 8; j++)
 					if(Rooms[i].Player[j]){
@@ -480,18 +646,42 @@ public:
                         Rooms[i].Player[j]->GetInRoomDeathResponse(&PKR);
 					}
                 cout << "-- CheckLife --" << endl;
-				if(CheckLife(i) == false){
-				 ResultsResponse Results_Response;
-				 memset(&Results_Response,0,sizeof(Results_Response));
-				 Results_Response.size = 0x90;
-				 Results_Response.type = RESULTS_RESPONSE;
-				 Results_Response.unk1 = 11036;
+                if (CheckLife(i, Rooms[i].mode, PK->deathplayerslot) == false) {
+                    cout << "Game Over" << endl;
+                    ResultsResponse Results_Response;
+                    memset(&Results_Response, 0, sizeof(Results_Response));
+                    Results_Response.size = 0x90;
+                    Results_Response.type = RESULTS_RESPONSE;
+                    Results_Response.unk1 = 11036;
+                    for (int j = 0; j < Rooms[i].p; j++)
+                    {
+                        SlotTeam = Rooms[i].Player[j]->Info.usr_team;
+                        if (Rooms[i].Player[j])Results_Response.result[j] = CheckResult(Rooms[i].mode, KillerTeam, SlotTeam);
+                    }
+                    for (int j = 0; j < Rooms[i].p; j++)
+                        if (Rooms[i].Player[j])
+                            Rooms[i].Player[j]->GetResultResponse(&Results_Response);
+                }
+                else
+                {
+                    cout << "There is life" << endl;
+                    if (CheckRound(i, PK->deathplayerslot))
+                    {
+                        cout << "Round Over" << endl;
+                        ResultsResponse Results_Response;
+                        memset(&Results_Response, 0, sizeof(Results_Response));
+                        Results_Response.size = 0x90;
+                        Results_Response.type = RESULTS_RESPONSE;
+                        Results_Response.unk1 = 11036;
+                        Results_Response.unk2 = 0;
+                        Results_Response.unk3 = 0;
 				 for(int j = 0; j < 8; j++)
-					 if(Rooms[i].Player[j])Results_Response.uk1[j] = 2;
+                            if (Rooms[i].Player[j])Results_Response.result[j] = 0;
 				for(int j = 0; j < 8; j++)
                     if(Rooms[i].Player[j])
 						Rooms[i].Player[j]->GetResultResponse(&Results_Response);
-				}else cout << "There is life" << endl; 
+                    }
+                }
             }
     }
 	void ProdcastRoomJoinResponse2(PacketHandler *player,int n){
@@ -593,7 +783,7 @@ public:
 				 Results_Response.type = RESULTS_RESPONSE;
 				 Results_Response.unk1 = 11036;
 				 for(int j = 0; j < 8; j++)
-					 if(Rooms[i].Player[j])Results_Response.uk1[j] = 1;
+                        if (Rooms[i].Player[j])Results_Response.result[j] = 1;
 				for(int j = 0; j < 8; j++)
                     if(Rooms[i].Player[j])
 						Rooms[i].Player[j]->GetResultResponse(&Results_Response);

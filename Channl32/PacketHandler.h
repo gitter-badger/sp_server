@@ -42,6 +42,7 @@ private:
 	MissionCompleteRequest *MissionComplete_Request;
 	OpenUserShopRequest *OpenUserShop;
 	CardSearchRequest *CardSearch_Request;
+    BigBattlePlayerJoinRequest *BigBattlePlayerJoin_Request;
 	BigBattleNpcKoRequest *BigBattleNpcKo_Request;
 	NpcKillRequest *NpcKill_Request;
 	PlayerKickRequest *PlayerKick_Request;
