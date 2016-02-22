@@ -356,7 +356,8 @@ public:
     }
 	int GenerateSkill(int level, int Type, int UpgradeType, int old_skill)
 	{
-		if (UpgradeType != 6) {
+        if (UpgradeType != 6)
+        {
 			int sizeofBootSkill1 = sizeof(BootSkill1);
 			int a = Type % 10, b = IdentifyItem(Type);
 			int Skill1 = rand() % ((level + 1) * 4) + 1, Skill2 = 0, Skill3 = 0;
@@ -410,7 +411,8 @@ public:
 				return Sk.getType();
 			}
 		}
-		else {
+        else
+        {
 			int sizeofBootSkill1 = sizeof(BootSkill1);
 			int a = Type % 10, b = IdentifyItem(Type);
 			int Skill1 = rand() % ((level + 1) * 4) + 1;
@@ -493,9 +495,10 @@ public:
 				if(damages[i]){
 					gain->exp[i] = totalexp*(1.0*damages[i]/totaldmg);
 					gain->cpMul[i] = rand()%10+1;
-				}else gain->exp[i] = 0;
-		}
-	}
+                }
+                else gain->exp[i] = 0;
+        }
+    }
 
 };
 

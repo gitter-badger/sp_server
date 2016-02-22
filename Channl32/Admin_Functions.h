@@ -57,8 +57,8 @@ void PacketHandler::RevivePlayer(char *cmd)
 	ReviveResponse RR;
     RR.size = 0x20;
     RR.unk1 = 11036;
-    RR.unk2 = 0;
-    RR.unk3 = 0;
+    RR.locationx = 0;
+    RR.locationy = 0;
 	for(int i = 0; i < 8; i++){
 	RR.Slot = i;
 	RoomList.ProdcastReviveResponse(&RR,Info.usr_room);

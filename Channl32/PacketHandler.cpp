@@ -101,7 +101,7 @@ void PacketHandler::Handle(unsigned char *buf)
         In_Room_Request = (InRoomRequest*)buf;
         cout << "IN_ROOM_REQ " << IP << " Team : " << In_Room_Request->team << endl;
         Info.usr_team = In_Room_Request->team;
-        if (In_Room_Request->GameStart == 0)
+        if (In_Room_Request->GameStart == 1)//Player change team
         {
             Info.usr_char = In_Room_Request->Character;
             Info.usr_team = In_Room_Request->team;
@@ -109,7 +109,7 @@ void PacketHandler::Handle(unsigned char *buf)
             HandleList.ProdcastRoomUpdate(Info.usr_room);
             GenerateResponse(ROOM_PLAYERDATA_RESPONSE);
         }
-        else if (In_Room_Request->GameStart == 2)
+        else if (In_Room_Request->GameStart == 2)//Player ready
         {
             Info.usr_ready = (BYTE)In_Room_Request->Ready;
             //if(In_Room_Request->Ready > 10)
@@ -185,6 +185,10 @@ void PacketHandler::Handle(unsigned char *buf)
         GenerateResponse(QUEST_LIFE_RESPONSE);
         break;
         */
+    case BIGBATTLE_PLAYER_JOIN_REQ:
+        BigBattlePlayerJoin_Request = (BigBattlePlayerJoinRequest*)buf;
+        cout << "BIGBATTLE_PLAYER_JOIN" << endl;
+        break;
     case BIGBATTLE_NPC_KO_REQ:
         BigBattleNpcKo_Request = (BigBattleNpcKoRequest*)buf;
         cout << "BIGBATTLE_NPC_KO_REQ" << endl;
@@ -197,12 +201,12 @@ void PacketHandler::Handle(unsigned char *buf)
         break;
     case REVIVE_REQ:
         Revive_Response = (ReviveResponse*)buf;
-        cout << "REVIVE_RESPONSE" << endl;
+        cout << "REVIVE_REQ" << endl;
         GenerateResponse(REVIVE_RESPONSE);
         break;
     case ROOM_QUIT_REQ:
     case ROOM_EXIT_REQ:
-        cout << "ROOM_EXIT/QUIT_RESPONSE" << endl;
+        cout << "ROOM_EXIT/QUIT_REQ" << endl;
         GenerateResponse(ROOM_EXIT_RESPONSE);
         break;
     case CHAT_REQ:
@@ -216,6 +220,7 @@ void PacketHandler::Handle(unsigned char *buf)
         RoomList.UpdateProgress(Info.usr_room, Quest_Progress->progress);
         break;
     default:
+        cout << "-- UNKNOW_REQ --" << endl;
         break;
     }
 }
@@ -258,7 +263,9 @@ int PacketHandler::UpdateState(int S)
 
 int PacketHandler::IdentifyPacketType(unsigned char* buf)
 {
-    return *(int*)(buf + 4);
+    int Handler_ipt = *(int*)(buf + 4);
+    cout << "-- IdentifyPacketType: " << Handler_ipt <<" --"<< endl;
+    return Handler_ipt;
 }
 
 void PacketHandler::Encrypt(unsigned char *buf)
@@ -283,7 +290,7 @@ void PacketHandler::Decrypt(unsigned char *buf)
     time(&rawtime);
     timeinfo = localtime(&rawtime);
     cout << "---- Decrypted Data  ----" << endl;
-    printf("-- Time: %s --\n", asctime(timeinfo));
+    printf("Time: %s \n", asctime(timeinfo));
     for (int i = 0; i < sz; i++)
     {
         if (i && i % 16 == 0)cout << endl;
@@ -641,12 +648,13 @@ void PacketHandler::GenerateResponse(int ResponsePacketType)
         buffer = (unsigned char*)&PickScroll_Response;
         break;
     case SPAWN_RESPONSE:
+        cout << "-- SPAWN_RESPONSE --" << endl;
         Spawn_Response.size = 0x38;
         Spawn_Response.type = SPAWN_RESPONSE;
         Spawn_Response.unk1 = 11036;
         for (int i = 0; i < 7; i++)
-            Spawn_Response.slots[i] = -1;
-        Spawn_Response.slots[Info.usr_slot] = 0;
+            Spawn_Response.slots[i] = true;//Set Ghost
+        Spawn_Response.slots[Info.usr_slot] = false;
         Spawn_Response.zero = 0;
         Spawn_Response.state = UpdateState();
         Spawn_Response.checksum = cIOSocket.MakeDigest((uint8*)&Spawn_Response);
@@ -770,7 +778,7 @@ void PacketHandler::GenerateResponse(int ResponsePacketType)
         BigBattleNpcKo_Response.size = 0xA4;
         BigBattleNpcKo_Response.type = BIGBATTLE_NPC_KO_RESPONSE;
         BigBattleNpcKo_Response.unk1 = 11036;
-        BigBattleNpcKo_Response.npcn = BigBattleNpcKo_Request->npcn;
+        BigBattleNpcKo_Response.deadslot = BigBattleNpcKo_Request->deadslot;//The Dead Slot
         BigBattleNpcKo_Response.zero = 0;
         BigBattleNpcKo_Response.luckmul = rand()%100;//Lucky Point Multiplier
         BigBattleNpcKo_Response.multiplier = 10;//1
@@ -779,7 +787,7 @@ void PacketHandler::GenerateResponse(int ResponsePacketType)
         BigBattleNpcKo_Response.pointbase = 100;
         BigBattleNpcKo_Response.sub = 0xFFFFFFFA;
         for (int i = 0; i < 3; i++)BigBattleNpcKo_Response.zeros[i] = 0;
-        BigBattleNpcKo_Response.npcn2 = BigBattleNpcKo_Request->npcn;
+        BigBattleNpcKo_Response.npcn2 = BigBattleNpcKo_Request->deadslot;
         for (int i = 0; i < 20; i++)BigBattleNpcKo_Response.unks[i] = -1;
         BigBattleNpcKo_Response.eleType = 1;
         BigBattleNpcKo_Response.eleBase = 1;
@@ -792,8 +800,9 @@ void PacketHandler::GenerateResponse(int ResponsePacketType)
         buffer = (unsigned char*)&BigBattleNpcKo_Response;
         break;
     case REVIVE_RESPONSE:
+        cout << "REVIVE_RESPONSE" << endl;
         RoomList.ProdcastReviveResponse(Revive_Response, Info.usr_room);
-        nOfPackets = 0;
+        nOfPackets = 1;
         break;
     case PLAYER_KICK_RESPONSE:
         if (Info.usr_slot == Info.rm_master)

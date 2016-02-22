@@ -601,8 +601,8 @@ struct ReviveResponse
     int checksum;
     int state;
     int Slot;
-    int unk2;
-    int unk3;
+    int locationx;
+    int locationy;
 };
 
 struct RoundClearResponse
@@ -653,7 +653,7 @@ struct ResultsResponse
     int unk1; //11036
     int checksum;
     int state;
-	int uk1[8];
+	int result[8];//0 = revive; 1 = win ; 2 = lose
 	int unk2; //1
 	int unk3; //1
 	int points[8];
@@ -754,7 +754,7 @@ struct BigBattleNpcKoResponse
     int unk1; //11036
     int checksum;
 	int state;
-	int npcn;
+	int deadslot;
 	int zero;
 	int luckmul; //Lucky Point Multiplier
 	int multiplier;

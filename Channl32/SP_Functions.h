@@ -131,21 +131,14 @@ void PacketHandler::GetInRoomData(RoomPlayerDataResponse* RPDR, bool started)
     RPDR->missionlevel = Info.Mission;
     MySql.GetEquipData(Info.usr_id,RPDR);
     RPDR->Ready = Info.usr_ready;
-    //RPDR->team = Info.usr_team;
 	RPDR->unk4 = 1;
 	RPDR->unk9 = 0x01FFFFFF;
 	RPDR->team = Info.usr_team;
-    if(Info.usr_mode == 5)
-        switch (Info.usr_slot)
-        {
-        case 0:
-            RPDR->team = 10;
-            break;
-        case 1:
-            RPDR->team = 20;
-            break;
-        }
-
+    if (Info.usr_mode == DUEL_MODE)
+    {     
+        if(Info.usr_slot) RPDR->team = 20;
+        else              RPDR->team = 10;
+    }
 	if(started && Info.usr_ready && !Joined)
     {
         RPDR->Start = 0;
