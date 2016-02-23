@@ -31,3 +31,4 @@
 /builds
 /bin
 /*.tss
+bin/config.ini

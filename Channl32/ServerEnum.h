@@ -5,57 +5,57 @@
 
 enum Character
 {
-    None = 0,
-    Xyrho = 10,
-    Shamoo = 20,
-    Seven = 30,
-    Cream = 40,
-    Roland = 50,
-    Aurelli = 60,
-    Hawk = 70,
-    Hazel = 80,
-    Cara = 90,
-    Warren = 100,
-    Lucy = 110,
-    Will = 120,
-    PremXyrho = 130,
-    PremShamoo = 140,
-    PremSeven = 150,
-    PremCream = 160,
-    PremRoland = 170,
-    PremAurelli = 180,
-    PremHawk = 190,
-    PremHazel = 200,
-    PremCara = 210,
-    PremWarren = 220,
-    PremLucy = 230,
-    PremWill = 240,
+	None = 0,
+	Xyrho = 10,
+	Shamoo = 20,
+	Seven = 30,
+	Cream = 40,
+	Roland = 50,
+	Aurelli = 60,
+	Hawk = 70,
+	Hazel = 80,
+	Cara = 90,
+	Warren = 100,
+	Lucy = 110,
+	Will = 120,
+	PremXyrho = 130,
+	PremShamoo = 140,
+	PremSeven = 150,
+	PremCream = 160,
+	PremRoland = 170,
+	PremAurelli = 180,
+	PremHawk = 190,
+	PremHazel = 200,
+	PremCara = 210,
+	PremWarren = 220,
+	PremLucy = 230,
+	PremWill = 240,
 
 };
 
 enum ResponseType
 {
-    WrongPasswd = 0,
-    CorrectPasswd = 1
+	WrongPasswd = 0,
+	CorrectPasswd = 1
 };
 
 enum ItemType
 {
-    ct_pet = 0,
-    ct_wpn = 1,
-    ct_arm = 2,
-    ct_mag = 3
+	ct_pet = 0,
+	ct_wpn = 1,
+	ct_arm = 2,
+	ct_mag = 3
 };
 
 enum AvatarType
 {
-    ct_foot = 1,
-    ct_body = 2,
-    ct_hand1 = 3,
-    ct_hand2 = 4,
-    ct_face = 5,
-    ct_hair = 6,
-    ct_head = 7
+	ct_foot = 1,
+	ct_body = 2,
+	ct_hand1 = 3,
+	ct_hand2 = 4,
+	ct_face = 5,
+	ct_hair = 6,
+	ct_head = 7
 };
 
 enum SearchType
@@ -134,93 +134,92 @@ enum NpcType {
 
 struct MyCharInfo
 {
-    int usr_id,usr_room,usr_ready,usr_slot,usr_char,rm_master,usr_mode, usr_team;
+	int usr_id, usr_room, usr_ready, usr_slot, usr_char, rm_master, usr_mode, usr_team;
 	char usr_name[13];
-    int UserType, premium;
-    bool gender, admin, questlife;
-    int DefaultCharacter;
-    int Level;
-    unsigned __int64 Points;
-    unsigned __int64 Code;
-    int Coins;
-    int Mission;
-    int nSlots;
-    int Water, Fire, Earth, Wind;
+	int UserType, premium;
+	bool gender, admin, questlife;
+	int DefaultCharacter;
+	int Level;
+	unsigned __int64 Points;
+	unsigned __int64 Code;
+	int Coins;
+	int Mission;
+	int nSlots;
+	int Water, Fire, Earth, Wind;
 	int scrolls[3];
 };
 
 struct Equips
 {
-    int magic;
-    int weapon;
-    int armour;
-    int pet;
-    //Avatar
+	int magic;
+	int weapon;
+	int armour;
+	int pet;
+	//Avatar
 };
 
 enum CardType1
 {
-    black = 1,
-    silver = 2,
-    gold = 3,
-    avatar = 4,
-    pet = 5,
-    silverp = 7
+	black = 1,
+	silver = 2,
+	gold = 3,
+	avatar = 4,
+	pet = 5,
+	silverp = 7
 };
 
 enum CardType2
 {
-    none = 0,
-    water = 1*10,
-    fire = 2*10,
-    earth = 3*10,
-    wind = 4*10
+	none = 0,
+	water = 1 * 10,
+	fire = 2 * 10,
+	earth = 3 * 10,
+	wind = 4 * 10
 };
-
 
 enum Weapon
 {
-    axe = 1+100+1000,
-    staff = 2+100+1000,
-    sword = 3+100+1000,
-    bow = 4+100+1000
+	axe = 1 + 100 + 1000,
+	staff = 2 + 100 + 1000,
+	sword = 3 + 100 + 1000,
+	bow = 4 + 100 + 1000
 };
 
 enum Armor
 {
-    shield = 1+200+1000,
-    pendant = 2+200+1000,
-    armor = 3+200+1000,
-    boots = 4+200+1000
+	shield = 1 + 200 + 1000,
+	pendant = 2 + 200 + 1000,
+	armor = 3 + 200 + 1000,
+	boots = 4 + 200 + 1000
 };
 
 enum Magic
 {
-    normalmagic = 1+300+1000,
-    specialmagic = 2+300+1000
+	normalmagic = 1 + 300 + 1000,
+	specialmagic = 2 + 300 + 1000
 };
 
 
 class Card
 {
 public:
-    Card(Weapon a, CardType2 b)
-    {
-        Type = a + b;
-    }
-    Card(Armor a, CardType2 b)
-    {
-        Type = a + b;
-    }
-    Card(Magic a, CardType2 b)
-    {
-        Type = a + b;
-    }
-    int Type;
-    int getType()
-    {
-        return Type;
-    };
+	Card(Weapon a, CardType2 b)
+	{
+		Type = a + b;
+	}
+	Card(Armor a, CardType2 b)
+	{
+		Type = a + b;
+	}
+	Card(Magic a, CardType2 b)
+	{
+		Type = a + b;
+	}
+	int Type;
+	int getType()
+	{
+		return Type;
+	};
 };
 
 enum Skill1
@@ -232,27 +231,28 @@ enum Skill1
 class Skill
 {
 public:
-    Skill(int a,int b, int c)
-    {
-        skill = a*1000000 + b*1000 + c;
-    }
-    int skill;
-    int getType()
-    {
-        return skill;
-    };
+	Skill(int a, int b, int c)
+	{
+		skill = a * 1000000 + b * 1000 + c;
+	}
+	int skill;
+	int getType()
+	{
+		return skill;
+	};
 };
 
-const int MagicEleLvlCost[] = {4,7,13,50,100,800,1600,3200};
-const int WpnEleLvlCost [] = {2,4,7,25,50,400,800,1600};
-const int ArmEleLvlCost [] = {1,2,4,13,25,200,400,800};
-const int ShdEleLvlCost [] = {1,1,2,7,13,100,200,400};
-const int MagicSkCost[] = {2,2,4,7,25,50,400,800,1600};
-const int WeaponSkCost[] = {1,1,2,4,13,25,200,400,800};
-const int BootSkCost[] = {1,2,4,7,13,25,200,400,800};
-const int ArmorSkCost[] = {1,1,1,2,7,13,100,200,400};
-const int ShieldSkCost[] = {1,1,1,1,4,7,50,100,200};
-const int PendantSkCost[] = {1,1,1,2,7,13,100,200,400};
+const int ElementCardCost = 30000;
+const int MagicEleLvlCost[] = { 4,7,13,50,100,800,1600,3200 };
+const int WpnEleLvlCost[] = { 2,4,7,25,50,400,800,1600 };
+const int ArmEleLvlCost[] = { 1,2,4,13,25,200,400,800 };
+const int ShdEleLvlCost[] = { 1,1,2,7,13,100,200,400 };
+const int MagicSkCost[] = { 2,2,4,7,25,50,400,800,1600 };
+const int WeaponSkCost[] = { 1,1,2,4,13,25,200,400,800 };
+const int BootSkCost[] = { 1,2,4,7,13,25,200,400,800 };
+const int ArmorSkCost[] = { 1,1,1,2,7,13,100,200,400 };
+const int ShieldSkCost[] = { 1,1,1,1,4,7,50,100,200 };
+const int PendantSkCost[] = { 1,1,1,2,7,13,100,200,400 };
 
 const int BootSkill1[] = { 110,111,112,113,156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171 };
 const int BootSkill2[] = { 310,311,312,313,349,350,351,352,361,362,363,364,365,366,367,368,369,370,371,372 };
@@ -271,93 +271,93 @@ const int MeleeWpnSkill2[] = { 200,201,300,301,302,303,304,306,314,315,316,317,3
 const int RangedWpnSkill2[] = { 202,203,204,300,301,302,303,304,306,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435 };
 const int MagicSkill[] = { 300,301,302,303,304,306,314,315,316,317,318,319,320,321,322,323,324,325,326,327,328,329,330,331,332,333,334,335,336,337,338,339,340,341,342,343,344,345,346,347,348,373,374,375,376,377,378,379,380,381,382,383,384,385,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,407,408,409,410,411,412,413,414,415,416,417,418,419,420,421,422,423,424,425,426,427,428,429,430,431,432,433,434,435 };
 
-static const char * ChatTypes[] = {"All","Whisper","Friend","Guild","GuildUnk","Unk","GM","Trade"};
-static const char * ElementTypes[] = {"none","water","fire","earth","wind"};
+static const char * ChatTypes[] = { "All","Whisper","Friend","Guild","GuildUnk","Unk","GM","Trade" };
+static const char * ElementTypes[] = { "none","water","fire","earth","wind" };
 class ItemId
 {
 private:
 public:
-    int Identify(int a)
-    {
-        return a/1000;
-    }
-    int IdentifyItem(int a)
-    {
-        return (a/100)%10;
-    }
-    int IdentifyType(int a)
-    {
-        return a%10;
-    }
-    bool UpgradeItem(int gf,int level)
-    {
-        if(level < 5)return true;
-        int x = rand() % 100;
-        int range = 0;
-        if(level == 5)
-            range = 20;
-        else if(level == 6)
-            range = 10;
-        else if(level == 7)
-            range = 5;
-        if(gf)range *= 2;
-        if(x < range)return true;
-        return false;
-    }
-    int GetUpgradeCost(int type,int level,int UpgradeType)
-    {
-			switch (IdentifyItem(type))
+	int Identify(int a)
+	{
+		return a / 1000;
+	}
+	int IdentifyItem(int a)
+	{
+		return (a / 100) % 10;
+	}
+	int IdentifyType(int a)
+	{
+		return a % 10;
+	}
+	bool UpgradeItem(int gf, int level)
+	{
+		if (level < 5)return true;
+		int x = rand() % 100;
+		int range = 0;
+		if (level == 5)
+			range = 20;
+		else if (level == 6)
+			range = 10;
+		else if (level == 7)
+			range = 5;
+		if (gf)range *= 2;
+		if (x < range)return true;
+		return false;
+	}
+	int GetUpgradeCost(int type, int level, int UpgradeType)
+	{
+		switch (IdentifyItem(type))
+		{
+		case ct_mag:
+			if (UpgradeType == 1)
+				return MagicEleLvlCost[level];
+			else
+				return MagicSkCost[level];
+		case ct_wpn:
+			if (UpgradeType == 1)
+				return WpnEleLvlCost[level];
+			else
+				return WeaponSkCost[level];
+		case ct_arm:
+			if (type % 10 == 1)
 			{
-			case ct_mag:
 				if (UpgradeType == 1)
-					return MagicEleLvlCost[level];
+					return ShdEleLvlCost[level];
 				else
-					return MagicSkCost[level];
-			case ct_wpn:
+					return ShieldSkCost[level];
+			}
+			else if (type % 10 == 4)
+			{
 				if (UpgradeType == 1)
 					return WpnEleLvlCost[level];
 				else
-					return WeaponSkCost[level];
-			case ct_arm:
-				if (type % 10 == 1)
-				{
-					if (UpgradeType == 1)
-						return ShdEleLvlCost[level];
-					else
-						return ShieldSkCost[level];
-				}
-				else if (type % 10 == 4)
-				{
-					if (UpgradeType == 1)
-						return WpnEleLvlCost[level];
-					else
-						return BootSkCost[level];
-				}
-				else
-				{
-					if (UpgradeType == 1)
-					{
-						return ArmEleLvlCost[level];
-					}
-					else if (type % 10 == 2)
-					{
-						return PendantSkCost[level];
-					}
-					else if (type % 10 == 3)
-					{
-						return ShieldSkCost[level];
-					}
-					else { }
-				}
-			default:
-				break;
+					return BootSkCost[level];
 			}
-        return 0;
-    }
+			else
+			{
+				if (UpgradeType == 1)
+				{
+					return ArmEleLvlCost[level];
+				}
+				else if (type % 10 == 2)
+				{
+					return PendantSkCost[level];
+				}
+				else if (type % 10 == 3)
+				{
+					return ShieldSkCost[level];
+				}
+				else {}
+			}
+		default:
+			break;
+		}
+		return 0;
+	}
 	int GenerateSkill(int level, int Type, int UpgradeType, int old_skill)
 	{
-        if (UpgradeType != 6)
-        {
+		if (UpgradeType != 6)
+		{
 			int sizeofBootSkill1 = sizeof(BootSkill1);
 			int a = Type % 10, b = IdentifyItem(Type);
 			int Skill1 = rand() % ((level + 1) * 4) + 1, Skill2 = 0, Skill3 = 0;
@@ -411,13 +411,13 @@ public:
 				return Sk.getType();
 			}
 		}
-        else
-        {
+		else
+		{
 			int sizeofBootSkill1 = sizeof(BootSkill1);
 			int a = Type % 10, b = IdentifyItem(Type);
 			int Skill1 = rand() % ((level + 1) * 4) + 1;
 			int skill_tmp = old_skill / 1000000;
-			int Skill2 = (old_skill - skill_tmp*1000000) / 1000;
+			int Skill2 = (old_skill - skill_tmp * 1000000) / 1000;
 			int Skill3 = 0;
 			if (a == 4 && b == ct_arm) //boots
 			{
@@ -484,21 +484,21 @@ public:
 	{
 		return 7000;
 	}
-	void Calculate(short npcType, ExpGain *gain,int *damages)
+	void Calculate(short npcType, ExpGain *gain, int *damages)
 	{
-		if(damages)
+		if (damages)
 		{
 			int totaldmg = 0, totalexp = CalculateNpcExp(npcType);
-			for(int i = 0; i < 8; i++)
+			for (int i = 0; i < 8; i++)
 				totaldmg += damages[i];
-			for(int i = 0; i < 8; i++)
-				if(damages[i]){
-					gain->exp[i] = totalexp*(1.0*damages[i]/totaldmg);
-					gain->cpMul[i] = rand()%10+1;
-                }
-                else gain->exp[i] = 0;
-        }
-    }
+			for (int i = 0; i < 8; i++)
+				if (damages[i]) {
+					gain->exp[i] = totalexp*(1.0*damages[i] / totaldmg);
+					gain->cpMul[i] = rand() % 10 + 1;
+				}
+				else gain->exp[i] = 0;
+		}
+	}
 
 };
 

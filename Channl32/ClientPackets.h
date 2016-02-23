@@ -36,7 +36,8 @@
 #define BIGBATTLE_NPC_KO_REQ  17302
 #define PLAYER_KICK_REQ		  17184
 #define CHANGE_ROOMTITLE_REQ  17232
-#define UNKNOW_ROOM_JOIN_REQ  17410     
+#define UNKNOW_ROOM_JOIN_REQ  17410
+#define SHOP_BUY_ELEMENTCARD_REQ  17464
 
 struct JoinChannelRequest
 {
@@ -210,6 +211,17 @@ struct ShopBuyRequest
     int unk3;
     int level;
     int unk5; //1
+};
+
+struct ShopBuyElementCardRequest
+{
+	int size; //0x1c
+	int type;
+	int unk1; //11036
+	int checksum;
+	int state;
+	int cardType;
+	int amount;
 };
 
 struct ShopSellRequest
