@@ -4,17 +4,16 @@
 #include <typedefs.h>
 #include <Windows.h>
 
-typedef int (__fastcall *fCall)(uint8 *);
-class IOSocket
-{
+typedef int(__fastcall *fCall)(uint8 *);
+class IOSocket {
 private:
-    HMODULE hModule;
+	HMODULE hModule;
 
 public:
-    IOSocket();
-    ~IOSocket();
+	IOSocket();
+	~IOSocket();
 
-    fCall MakeDigest;
+	fCall MakeDigest;
 };
 
 

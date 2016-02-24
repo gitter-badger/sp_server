@@ -6,14 +6,13 @@
 #include "main.h"
 #include "PacketHandler.h"
 
-class cLoginServer
-{
+class cLoginServer {
 public:
-    cLoginServer();
-    ~cLoginServer();
-    bool Start();
-    bool CommLoop();
-    void outBuffer();
+	cLoginServer();
+	~cLoginServer();
+	bool Start();
+	bool CommLoop();
+	void outBuffer();
 
 private:
 	//unsigned char buffer[BUFFER_SIZE];

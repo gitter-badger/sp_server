@@ -7,8 +7,7 @@
 #include "ServerPackets.h"
 #include <mysql.h>
 
-class MySQL
-{
+class MySQL {
 private:
 	MYSQL *connection;
 
@@ -37,16 +36,14 @@ public:
 	void BuyElementCard(MyCharInfo *Info, CardType2 type, int amount);
 };
 
-struct LobbyUser
-{
+struct LobbyUser {
 	string name;
 	bool gender;
 	int level, mission;
 	LobbyUser *ptr;
 };
 
-class LobbyList
-{
+class LobbyList {
 private:
 	int count;
 	LobbyUser *root;

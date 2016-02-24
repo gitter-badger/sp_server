@@ -6,14 +6,12 @@
 
 #include "typedefs.h"
 
-class CIni
-{
+class CIni {
 public:
-	CIni(char * fileName, char * section = NULL); 
+	CIni(char * fileName, char * section = NULL);
 	~CIni();
 
-	void SetSection(const char * section)
-	{
+	void SetSection(const char * section) {
 		_section = section;
 	}
 

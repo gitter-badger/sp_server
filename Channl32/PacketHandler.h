@@ -8,8 +8,7 @@
 #include "ServerPackets.h"
 #include "MySQL.h"
 
-class PacketHandler
-{
+class PacketHandler {
 private:
 	struct sockaddr_in udp_client;
 	MySQL MySql;

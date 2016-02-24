@@ -5,17 +5,16 @@
 #include "ServerEnum.h"
 #include <mysql.h>
 
-class MySQL
-{
+class MySQL {
 private:
-MYSQL *connection;
+	MYSQL *connection;
 
 public:
-MySQL();
-~MySQL();
-int Login(char*,char*);
-void GetUserInfo(int,MyCharInfo&);
-void SetDefaultCharacter(int,Character);
+	MySQL();
+	~MySQL();
+	int Login(char*, char*);
+	void GetUserInfo(int, MyCharInfo&);
+	void SetDefaultCharacter(int, Character);
 
 };
 

@@ -8,41 +8,40 @@
 #include "ServerPackets.h"
 #include "MySQL.h"
 
-class PacketHandler
-{
+class PacketHandler {
 private:
-    int usr_id;
-    unsigned char* buffer;
+	int usr_id;
+	unsigned char* buffer;
 	MySQL MySql;
 
-// Client Packet Structures
-    LoginInfo *Login_Info;
-    ServerInfoRequest *Server_Info_Request;
-    DefaultCharacterChangeRequest *Default_Character_Change_Request;
+	// Client Packet Structures
+	LoginInfo *Login_Info;
+	ServerInfoRequest *Server_Info_Request;
+	DefaultCharacterChangeRequest *Default_Character_Change_Request;
 
-// Server Packet Structures
-    LoginResponse Login_Response;
-    ServerInfo Server_Info[3];
-    DefaultCharacterChangeResponse Default_Character_Change_Response;
+	// Server Packet Structures
+	LoginResponse Login_Response;
+	ServerInfo Server_Info[3];
+	DefaultCharacterChangeResponse Default_Character_Change_Response;
 	TrainingDoneResponse TrainingDone_Response;
 
 
 public:
-    PacketHandler(unsigned char*);
-    ~PacketHandler();
-    int UpdateState();
-    int IdentifyPacketType();
-    int IdentifyPacketType(unsigned char*);
-    void Encrypt(unsigned char*);
-    void Decrypt(unsigned char*);
-    bool IsCorrectLogin();
-    void GetCharInfo(char *,MyCharInfo &);
-    void SetDefaultCharacter(Character);
-    void GenerateResponse(int);
-    char* ServerResponse();
-    int ServerResponse(unsigned char*);
+	PacketHandler(unsigned char*);
+	~PacketHandler();
+	int UpdateState();
+	int IdentifyPacketType();
+	int IdentifyPacketType(unsigned char*);
+	void Encrypt(unsigned char*);
+	void Decrypt(unsigned char*);
+	bool IsCorrectLogin();
+	void GetCharInfo(char *, MyCharInfo &);
+	void SetDefaultCharacter(Character);
+	void GenerateResponse(int);
+	char* ServerResponse();
+	int ServerResponse(unsigned char*);
 
-    static int nOfPackets, State;
+	static int nOfPackets, State;
 };
 
 #endif
